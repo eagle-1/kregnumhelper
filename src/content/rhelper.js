@@ -1,9 +1,9 @@
 /* Regnum Helper by Nobbi (inspired from KapiSkript © by RaNaN)*/
-const rh_version="1.7.7";
-const rh_v=177;
+const rh_version="1.7.8";
+const rh_v=178;
 var GBack = "", tr_arr = new Array(), tr_max = 0, tr_ind = 0, tr_inprogress = new Boolean (false), popwin, mainwin,lang='de',uin,
     x=0, xx=100, yy=0, y=0, rh_showit=0, over, gm_name = new Array(), gm_uid = new Array(), gm_stat = new Array(),
-    gm_cnt = 0, tid=0, rh_igmforw = new Boolean (false), rh_devel = new Boolean(false), anzahl, ziel, cur="", popcalc=null,
+    gm_cnt = 0, tid=0, rh_igmforw = new Boolean (false), rh_devel = new Boolean(false), anzahl, ziel, cur="", popcalc=null, DD = 0,
     ww = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher),
     prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService),
     rh_prefManager=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
@@ -106,16 +106,24 @@ function rh_forschZeit(C){
 function rh_BerechneProdZeit(E){
         if(E.target.getAttribute("size")==8){
             //~ anzahl=rh_evalNode(E.target.ownerDocument,E.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode,".//input[@size='9']");
-            ziel=E.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild;
-            //~ ziel=anzahl[0];
-            //~ anzahl=anzahl[0].value
-            anzahl=ziel.value;
+            if(DD==0){
+                ziel=E.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild;
+            }
+            if(DD==1){
+                ziel=E.target.parentNode.parentNode.nextSibling.nextSibling.firstChild;
+            }
+                anzahl=ziel.value;
         }else{
             ziel=E.target;
             anzahl=E.target.value;
         }
         if(anzahl==0||anzahl==""){
-            ziel.nextSibling.textContent="Endzeit: "
+            if(DD==0){
+                ziel.nextSibling.textContent="Endzeit: "
+            }
+            if(DD==1){
+                ziel.nextSibling.nextSibling.textContent="Endzeit: "
+            }
         }else{
             var D=rh_evalNode(E.target.ownerDocument,E.target.parentNode.parentNode,".//font");
             var C=D[0].parentNode.lastChild.textContent;
@@ -126,7 +134,12 @@ function rh_BerechneProdZeit(E){
             G.setTime(G.getTime()+F);
             var A=new Array("So","Mo","Di","Mi","Do","Fr","Sa");
             var B=A[G.getDay()]+unescape("%A0")+((G.getDate()<10)?"0"+G.getDate():G.getDate())+"."+(((parseFloat(G.getMonth())+1)<10)?"0"+(parseFloat(G.getMonth())+1):(parseFloat(G.getMonth())+1))+". "+((G.getHours()<10)?"0"+G.getHours():G.getHours())+":"+((G.getMinutes()<10)?"0"+G.getMinutes():G.getMinutes())+unescape("%A0"+"Uhr");
-            ziel.nextSibling.textContent="Endzeit: " + B
+            if(DD==0){
+                ziel.nextSibling.textContent="Endzeit: " + B
+            }
+            if(DD==1){
+                ziel.nextSibling.nextSibling.textContent="Endzeit: " + B
+            }
         }
     }
 function rh_ProdKosten(A){
@@ -136,8 +149,12 @@ function rh_ProdKosten(A){
         var D=rh_evalNode(K,A.target.parentNode.parentNode,".//font[@class='klein']");
         var F=D[1].parentNode.firstChild;
         if(A.target.getAttribute("size")==8){
-            //~ anzahl=rh_evalNode(K,A.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode,".//input[@size ='9']")[0].value
-            anzahl=A.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild.value;
+            if(DD==0){
+                anzahl=A.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild.value;
+            }
+            if(DD==1){
+                anzahl=A.target.parentNode.parentNode.nextSibling.nextSibling.firstChild.value;
+            }
         }else{
             anzahl=A.target.value;
         }
@@ -159,7 +176,12 @@ function rh_ProdKosten(A){
                 C+="<tr><td>"+Math.setSectionPoints(Math.round(H[E]*anzahl*10)/10)+" "+B[E]+"</td></tr>"
             }
         }
-        var I=rh_extract(D[1].nextSibling.nextSibling.textContent,"Produktionskosten: "," ");
+        if(DD==0){
+            var I=rh_extract(D[1].nextSibling.nextSibling.textContent,"Produktionskosten: "," ");
+        }
+        if(DD==1){
+            var I=rh_extract(D[1].nextSibling.nextSibling.nextSibling.textContent,"Produktionskosten: "," ");
+        }
         I=I.replace(".","");
         I=I.replace(",",".");
         C+="<tr><td>"+Math.setSectionPoints(Math.round(I*anzahl*100)/100)+" "+cur+"</td></tr></table>";
@@ -183,9 +205,12 @@ function rh_BerechneProduktion(E){
         var B=3600/H;
         var A=C/B;
         A=Math.round(A);
-        //~ var G=E.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-        //~ var F=G.lastChild.firstChild;
-        E.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild.value=A
+        if(DD=0){
+            E.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild.value=A
+        }
+        if(DD=1){
+            E.target.parentNode.parentNode.nextSibling.nextSibling.firstChild.value=A
+        }
     }
 function rh_BerechneKosten(A){
         var C=A.target.ownerDocument;
@@ -523,7 +548,7 @@ function rh_init_main(Aa){
                 rh_scripts = J.getElementsByTagName("script");
                 rh_found = false;
                 for (var i=0; i<rh_scripts.length;i++){
-                    if((rh_scripts[i].src.search(/google-analytics/) > -1)||(rh_scripts[i].text.search(/google-analytics/) > -1)){
+                    if((rh_scripts[i].src.search(/google-analytics/) > -1)||(rh_scripts[i].text.search(/google-analytics/) > -1)||(rh_scripts[i].src.search(/(ga|ga_anonym)[.]js/) > -1)||(rh_scripts[i].text.search(/(ga|ga_anonym)[.]js/) > -1)){
                         rh_scripts[i].parentNode.removeChild(rh_scripts[i]);
                         rh_found = true;
                     break;
@@ -532,6 +557,12 @@ function rh_init_main(Aa){
             }
         }
         var M=rh_eval(J,"//td/abbr[text()='Bar']/parent::td/parent::tr/parent::tbody/tr/td");
+        
+        if(M.length==0){
+            M=rh_eval(J,"//div/abbr[text()='Bar']/../../div");
+            DD = 1;
+        }
+        
         if(M.length>0){
             
             if(M[0].childNodes[2]){
@@ -542,7 +573,7 @@ function rh_init_main(Aa){
                     D+=2
                 }
             }
-            //alert(M.length + "\n\n" + M[2].innerHTML);
+            //alert("Line 546:" + D + "\n\n" + M.length + "\n\n" + M[2].innerHTML);
             P=rh_new_elm(J,"table","","id","rhtable1");
             H=rh_new_elm(J,"tr","");
             Q=J.createElement("TD");
@@ -553,12 +584,12 @@ function rh_init_main(Aa){
             E=J.createTextNode("RHelper "+rh_version);
             if(rh_devel){
                 if(!rh_prefManager.getBoolPref("extensions.rh.nolinkicon")){
-                    Q.appendChild(rh_new_elm(J,"img","","src","chrome://regnumhelper/content/regnumhelpel.gif","width","41px","height","34px"));
+                    Q.appendChild(rh_new_elm(J,"img","","src","chrome://regnumhelper/content/regnumhelpel.gif","width","32px","height","32px"));
                 }
                 Q.addEventListener("click",function(){window.open("chrome://regnumhelper/content/prefel.xul","findfile","chrome")},true);
             }else{
                 if(!rh_prefManager.getBoolPref("extensions.rh.nolinkicon")){
-                    Q.appendChild(rh_new_elm(J,"img","","src","chrome://regnumhelper/content/regnumhelper.gif","width","41px","height","34px"));
+                    Q.appendChild(rh_new_elm(J,"img","","src","chrome://regnumhelper/content/regnumhelper.gif","width","32px","height","32px"));
                 }
                 Q.addEventListener("click",function(){window.open("chrome://regnumhelper/content/pref.xul","findfile","chrome")},true);
             }
@@ -569,10 +600,18 @@ function rh_init_main(Aa){
             H.appendChild(A);
             H.appendChild(B);
             P.appendChild(H);
-            rh_insAfter(P,M[0].childNodes[1+D]);
-            var K1=M[0].parentNode.nextSibling.nextSibling.childNodes[1].textContent;
+            if(DD==0){
+                rh_insAfter(P,M[0].childNodes[1+D]);
+                var K1=M[0].parentNode.nextSibling.nextSibling.childNodes[1].textContent;
+                var L1=M[0].parentNode.nextSibling.nextSibling.nextSibling.nextSibling.childNodes[1].textContent;
+            }
+            if(DD==1){
+                //rh_insAfter(P,M[0].parentNode.childNodes[1]);
+                rh_insAfter(P,M[0]);
+                var K1=M[2].textContent;
+                var L1=M[4].textContent;
+            }
             K=K1.substring(0,K1.length-3);
-            var L1=M[0].parentNode.nextSibling.nextSibling.nextSibling.nextSibling.childNodes[1].textContent;
             L=L1.substring(0,L1.length-3);
             cur = L1.substring(L.length+1,L.length+3);
             K=K.replace(/[.]/g,"");
@@ -584,14 +623,24 @@ function rh_init_main(Aa){
             O=Math.setSectionPoints(O);
             if(O.length<L1.length-3||O.length<K1.length-3){O=O+"0"}
             if(rh_prefManager.getBoolPref("extensions.rh.geldsumme")){
-                H=rh_new_elm(J,"tr","");
-                A=rh_new_elm(J,"TD","","width","30%","valign","top","align","left","class","white");
-                B=rh_new_elm(J,"TD","","width","70%","valign","top","align","right","class","white");
-                A.appendChild(J.createTextNode("Gesamt: "));
-                B.appendChild(J.createTextNode(O+" "+cur));
-                H.appendChild(A);
-                H.appendChild(B);
-                rh_insAfter(H,M[0].parentNode.nextSibling.nextSibling.nextSibling.nextSibling);
+                if(DD==0){
+                    H=rh_new_elm(J,"tr","");
+                    A=rh_new_elm(J,"TD","","width","30%","valign","top","align","left","class","white");
+                    B=rh_new_elm(J,"TD","","width","70%","valign","top","align","right","class","white");
+                    A.appendChild(J.createTextNode("Gesamt: "));
+                    B.appendChild(J.createTextNode(O+" "+cur));
+                    H.appendChild(A);
+                    H.appendChild(B);
+                    rh_insAfter(H,M[0].parentNode.nextSibling.nextSibling.nextSibling.nextSibling);
+                }
+                if(DD==1){
+                    A=rh_new_elm(J,"div","","style","width: 30%; float: left;");
+                    B=rh_new_elm(J,"div","","style","width: 70%; float: left; text-align: right;");
+                    A.appendChild(J.createTextNode("Gesamt: "));
+                    B.appendChild(J.createTextNode(O+" "+cur));
+                    rh_insAfter(B,M[4]);
+                    rh_insAfter(A,M[4]);
+                }
             }
             if(rh_prefManager.getBoolPref("extensions.rh.wbwlink")){
                 var H=rh_new_elm(J,"tr",""),
@@ -652,7 +701,10 @@ function rh_init_main(Aa){
         }
         if(J.location.href.search(/page=guild_member&/)>-1){
             if(rh_prefManager.getBoolPref("extensions.rh.guildpage")){
-                var O=rh_eval(J,"//td[@class='white']/table[@cellpadding='2']/tbody")[0],
+                //div[@style='width: 100%; margin-bottom: 2px;']
+                //div[@style='width: 100%; margin-bottom: 2px;']/div[@class='hell']
+                //var O=rh_eval(J,"//td[@class='white']/table[@cellpadding='2']/tbody")[0],
+                var O=rh_eval(J,"//div[@style='width: 100%; margin-bottom: 2px;']"),
                 P, PL, Q, QL, R, RL, S, SL, T,Qtemp,
                 igmlink = J.location.pathname + "?page=nachricht&UIN=" + uin + "&ename=",
                 marktlink = J.location.pathname + "?page=markt4&UIN=" + uin + "&usernummer=",
@@ -729,7 +781,12 @@ function rh_init_main(Aa){
             if(rh_prefManager.getBoolPref("extensions.rh.ausbau")){
                 var A=rh_eval(J,"//input[@name='ausbau']");
                 A[0].addEventListener("keyup",rh_ausbau,true);
-                var AD=A[0].parentNode.parentNode.parentNode.parentNode.parentNode;
+                if(DD==0){
+                    var AD=A[0].parentNode.parentNode.parentNode.parentNode.parentNode;
+                }
+                if(DD==1){
+                    var AD=A[0].parentNode;
+                }
                 var U=rh_new_elm(J,"font","Kosten:"+unescape("%A0%A0")+"Dauer:","id","kosten");
                 var Y=rh_new_elm(J,"font","Holz:"+unescape("%A0%A0")+"Steine:"+unescape("%A0%A0")+"Werkzeuge:","id","kosten2");
                 rh_insAfter(Y,AD);
@@ -779,8 +836,14 @@ function rh_init_main(Aa){
                     }
                 }
             }
-            var AV=rh_eval(J,"//td[@class='white2']/*[position()=" + pos1 + " and (name()='TABLE' or name()='table')]//text()[contains(.,':')]/.."),
+            if(DD==0){
+                var AV=rh_eval(J,"//td[@class='white2']/*[position()=" + pos1 + " and (name()='TABLE' or name()='table')]//text()[contains(.,':')]/.."),
             q=0;
+            }
+            if(DD==1){
+                var AV=rh_eval(J,"//div//a//text()[contains(.,':')]/.."),
+                q=0;
+            }
             if(rh_prefManager.getBoolPref("extensions.rh.countdown")){
                 for(var AH=0;AH<AV.length;AH++){
                     if(AV[AH].textContent.match(/([0-9][:][0-9]+[:][0-9]+)/)){
@@ -844,24 +907,48 @@ function rh_init_main(Aa){
                 rh_showit=0;
                 J.childNodes[1].lastChild.appendChild(over);
                 J.addEventListener("mousemove",rh_mouseMove,true);
-                var A=rh_eval(J,"//form[contains(@action,'page=roh2&art=')]/table/tbody/tr");
-                for(var B=1;B<A.length;B++){
-                    if(A[B].childNodes[1].firstChild.nodeName=="INPUT"){
-                        A[B].childNodes[1].appendChild(J.createTextNode("Endzeit:"));
-                        A[B].childNodes[1].addEventListener("keyup",rh_BerechneProdZeit,true);
-                        A[B].childNodes[1].addEventListener("keyup",rh_ProdKosten,true);
-                        A[B].childNodes[1].addEventListener("change",rh_clr,true);
-                        var C = A[B].firstChild.childNodes[1].firstChild.firstChild.firstChild.firstChild;
-                        var D = J.createTextNode("Prod.Zeit:");
-                        var E = rh_new_elm(J,"INPUT","","maxlength","8","value","DD:HH:MM","size","8");
-                        rh_insAfter(D,C.nextSibling);
-                        rh_insAfter(E,D);
-                        E.addEventListener("focus",rh_empty,true);
-                        E.addEventListener("keyup",rh_BerechneProduktion,true);
-                        E.addEventListener("keyup",rh_BerechneProdZeit,true);
-                        E.addEventListener("keyup",rh_ProdKosten,true);
-                        E.addEventListener("change",rh_clr,true);
-                        E.addEventListener("change",rh_BerechneProduktion,true)
+                if(DD==0){
+                    var A=rh_eval(J,"//form[contains(@action,'page=roh2&art=')]/table/tbody/tr");
+                    for(var B=1;B<A.length;B++){
+                        if(A[B].childNodes[1].firstChild.nodeName=="INPUT"){
+                            A[B].childNodes[1].appendChild(J.createTextNode("Endzeit:"));
+                            A[B].childNodes[1].addEventListener("keyup",rh_BerechneProdZeit,true);
+                            A[B].childNodes[1].addEventListener("keyup",rh_ProdKosten,true);
+                            A[B].childNodes[1].addEventListener("change",rh_clr,true);
+                            var C = A[B].firstChild.childNodes[1].firstChild.firstChild.firstChild.firstChild;
+                            var D = J.createTextNode("Prod.Zeit:");
+                            var E = rh_new_elm(J,"INPUT","","maxlength","8","value","DD:HH:MM","size","8");
+                            rh_insAfter(D,C.nextSibling);
+                            rh_insAfter(E,D);
+                            E.addEventListener("focus",rh_empty,true);
+                            E.addEventListener("keyup",rh_BerechneProduktion,true);
+                            E.addEventListener("keyup",rh_BerechneProdZeit,true);
+                            E.addEventListener("keyup",rh_ProdKosten,true);
+                            E.addEventListener("change",rh_clr,true);
+                            E.addEventListener("change",rh_BerechneProduktion,true)
+                        }
+                    }
+                }
+                if(DD==1){
+                    var A=rh_eval(J,"//form[contains(@action,'page=roh2&art=')]/div/div/div");
+                    for(var B=0;B<(A.length);B++){
+                        if(A[B].childNodes[3].firstChild.nodeName=="INPUT"){
+                            A[B].childNodes[3].appendChild(J.createTextNode("Endzeit:"));
+                            A[B].childNodes[3].addEventListener("keyup",rh_BerechneProdZeit,true);
+                            A[B].childNodes[3].addEventListener("keyup",rh_ProdKosten,true);
+                            A[B].childNodes[3].addEventListener("change",rh_clr,true);
+                            var C = A[B].childNodes[1].childNodes[3].childNodes[3];
+                            var D = J.createTextNode("Prod.Zeit:");
+                            var E = rh_new_elm(J,"INPUT","","maxlength","8","value","DD:HH:MM","size","8");
+                            rh_insAfter(D,C.nextSibling);
+                            rh_insAfter(E,D);
+                            E.addEventListener("focus",rh_empty,true);
+                            E.addEventListener("keyup",rh_BerechneProduktion,true);
+                            E.addEventListener("keyup",rh_BerechneProdZeit,true);
+                            E.addEventListener("keyup",rh_ProdKosten,true);
+                            E.addEventListener("change",rh_clr,true);
+                            E.addEventListener("change",rh_BerechneProduktion,true)
+                        }
                     }
                 }
             }
@@ -884,7 +971,12 @@ function rh_init_main(Aa){
         }
         if(J.location.href.search(/page=kauf&/)>-1){
             if(rh_prefManager.getBoolPref("extensions.rh.menupreis")){
-                var AJ=rh_eval(J,"//td/a[position()=last() and contains(@href,'kauf10')]/..")[0];
+                if(DD==0){
+                    var AJ=rh_eval(J,"//td/a[position()=last() and contains(@href,'kauf10')]/..")[0];
+                }
+                if(DD==1){
+                    var AJ=rh_eval(J,"//div/a[position()=last() and contains(@href,'kauf10')]/..")[0];
+                }
                 var AC=AJ.innerHTML.substring(AJ.innerHTML.search("<a"),AJ.innerHTML.length);
                 var pr=AJ.innerHTML.match(/(^[\.0-9,]+) /)[1];
                 pr=pr.replace(".","");
@@ -915,6 +1007,21 @@ function rh_init_main(Aa){
             try{
                 var t=rh_eval(J,"//select[@name='server']");
                 t[0].options.selectedIndex=rh_prefManager.getIntPref("extensions.rh.welt");
+                if(rh_prefManager.getBoolPref("extensions.rh.tracking")){
+                    //remove all google-analytics scripts from current page
+                    var rh_scripts = J.getElementsByTagName("script"), rh_found = new Boolean (true);
+                    while(rh_found==true){
+                        rh_scripts = J.getElementsByTagName("script");
+                        rh_found = false;
+                        for (var i=0; i<rh_scripts.length;i++){
+                            if((rh_scripts[i].src.search(/google-analytics/) > -1)||(rh_scripts[i].text.search(/google-analytics/) > -1)||(rh_scripts[i].src.search(/(ga|ga_anonym)[.]js/) > -1)||(rh_scripts[i].text.search(/(ga|ga_anonym)[.]js/) > -1)){
+                                rh_scripts[i].parentNode.removeChild(rh_scripts[i]);
+                                rh_found = true;
+                            break;
+                            }
+                        }
+                    }
+                }
                 //~ var u=rh_eval(J,"//body");
                 //~ u[0].setAttribute("onload","return false;");
             }
