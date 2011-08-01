@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://regnumhelper/locale/prefwindow.dtd">
+
+<dialog
+       id="rh-options"
+       title="RegnumHelper Developer"
+       buttons="accept,cancel"
+       ondialogaccept="return rh_SaveOptions();"
+       ondialogcancel="return true;"
+       onload="rh_InitOptions();"
+       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript" src="chrome://regnumhelper/content/prefel.js"/>
+    <tabbox>
+        <tabs>
+            <tab label="&tab.title1;"/>
+            <tab label="&tab.title2;"/>
+            <tab label="&tab.title3;"/>
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+                <rows>
+                    <row>
+                        <groupbox>
+                            <caption label="Login:"/>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <menulist id="welt">
+                                            <menupopup>
+                                                <menuitem label="&welt; 1" value="1"/>
+                                                <menuitem label="&welt; 2" value="2"/>
+                                                <menuitem label="&welt; 3" value="3"/>
+                                                <menuitem label="&welt; 4" value="4"/>
+                                            </menupopup>
+                                        </menulist>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                        <groupbox>
+                            <caption label="&ga;"/>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <checkbox label="&tracking;" id="tracking"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </row>
+                    <row>
+                        <groupbox>
+                            <caption label="&anzeigen;"/>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <checkbox label="&endzeit;" id="endzeit"/>
+                                        <checkbox label="&produktion;" id="produktion"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&geldsumme;" id="geldsumme"/>
+                                        <checkbox label="&ausbau;" id="ausbau"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&forschend;" id="forschend"/>
+                                        <checkbox label="&geldverkauf;" id="geldverkauf"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&wbwlink;" id="wbwlink"/>
+                                        <checkbox label="&guildpage;" id="guildpage"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&ausgabenmarkt;" id="ausgabenmarkt"/>
+                                        <checkbox label="&nolinkicon;" id="nolinkicon"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </row>
+                    <row>
+                        <groupbox>
+                            <caption label="&farben; (Hex-Code):"/>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <label/>
+                                        <label>&zeit;</label>
+                                        <label/>
+                                        <label>&farbe;</label>
+                                    </row>
+                                    <row>
+                                        <label>&unter;</label>
+                                        <textbox id="zeit0" size="2" maxlength="3"/>
+                                        <label>&min.n;</label>
+                                        <textbox id="farbe0" size="6" maxlength="7"/>
+                                        <colorpicker type ="button" id="col0"/>
+                                    </row>
+                                    <row>
+                        <label>&unter;</label>
+                                        <textbox id="zeit1" size="2" maxlength="3"/>
+                                        <label>&std.n;</label>
+                                        <textbox id="farbe1" size="6" maxlength="7"/>
+                                        <colorpicker type ="button" id="col1"/>
+                                    </row>
+                                    <row>
+                        <label>&unter;</label>
+                                        <textbox id="zeit2" size="2" maxlength="3"/>
+                                        <label>&std;</label>
+                                        <textbox id="farbe2" size="6" maxlength="7"/>
+                                        <colorpicker type ="button" id="col2"/>
+                                    </row>
+                                    <row>
+                        <label>&unter;</label>
+                                        <textbox id="zeit3" size="2" maxlength="3"/>
+                                        <label>&std;</label>
+                                        <textbox id="farbe3" size="6" maxlength="7"/>
+                                        <colorpicker type ="button" id="col3"/>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </row>
+                </rows>
+            </tabpanel>
+            <tabpanel>
+                <rows>
+                    <row>
+                        <groupbox>
+                            <caption label="&sonderf;"/>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <checkbox label="&ptitle;" id="ptitle"/>
+                                        <textbox id="ptv" size="20" maxlength="21"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&firmensuche;" id="firmensuche"/>
+                                        <checkbox label="&prodskip;" id="prodskip"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&cancelskip;" id="cancelskip"/>
+                                        <checkbox label="&vertragskip;" id="vertragskip" disabled="true"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&marktskip;" id="marktskip" disabled="true"/>
+                                        <checkbox label="&allewaren;" id="allewaren"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&menupreis;" id="menupreis"/>
+                                        <checkbox label="&nachrichtskip;" id="nachrichtskip" disabled="true"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&gebfast;" id="gebfast" disabled="true"/>
+                                        <checkbox label="&countdown;" id="countdown"/>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&schnellzugriff;" id="schnellzugriff" disabled="true"/>
+                                         <checkbox label="&taschenrechner;" id="taschenrechner"/>
+                                   </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </row>
+                    <row>
+                        <groupbox>
+                            <caption label="&marktsort;"/>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <radiogroup id="sortierung">
+                                            <columns>
+                                                <column>
+                                                    <radio label="&m.nicht;"/>
+                                                </column>
+                                                <column>
+                                                    <radio label="&m.preis;"/>
+                                                </column>
+                                                <column>
+                                                    <radio label="&m.q;"/>
+                                                </column>
+                                            </columns>
+                                        </radiogroup>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </row>
+                    <row>
+                        <groupbox>
+                            <caption label="&notizbuch;"/>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <checkbox label="&n.aktv;" id="notizbuch" disabled="true"/>
+                                        <checkbox label="&n.inoffice;" span="1" id="todo" disabled="true"/>
+                                        <label>&n.sbarkeit;</label>
+                                        <textbox size="3" maxlength="3" id="nbopac" disabled="true"/>
+                                        <label>%</label>
+                                    </row>
+                                    <row>
+                        <textbox size="3" maxlength="3" id="nbcols" disabled="true"/>
+                    <label>&nbcols;</label>
+                        <textbox size="3" maxlength="3" id="nbrows" disabled="true"/>
+                        <label>&nbrows;</label>
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+                    </row>
+                </rows>
+            </tabpanel>
+            <tabpanel>
+                        <groupbox>
+                            <caption label="&aqprod;"/>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <label/>
+                                        <label/>
+                                        <label>&aqv;</label>
+                                    </row>
+                                    <row>
+                                        <checkbox label="&autoquell;" id="autoquell"/>
+                                        <checkbox label="&aqcancel;" id="aqcancel"/>
+                                        <textbox id="aqv" size="7" maxlength="8" />
+                                    </row>
+                                </rows>
+                            </grid>
+                        </groupbox>
+            </tabpanel>
+    </tabpanels>
+    </tabbox>
+</dialog>

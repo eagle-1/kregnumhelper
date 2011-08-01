@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://regnumhelper/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://regnumhelper/locale/regnumhelper.dtd">
+<overlay id="regnumhelper-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/x-javascript" src="chrome://regnumhelper/content/overlay.js"/>
+  <script type="application/x-javascript" src="chrome://regnumhelper/content/rhelper.js"/>
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="regnumhelper-strings" src="chrome://regnumhelper/locale/regnumhelper.properties"/>
+  </stringbundleset>
+
+  <menupopup id="menu_ToolsPopup">
+    <menu id="regnumhelpermenu" label="&regnumhelpermenu.label;"  insertafter="javascriptConsole">
+        <menupopup id="menu_ToolsrhPopup">
+            <menuitem id="regnumhelper1" label="&regnumhelper1.label;" oncommand="regnumhelper.onMenuItemCommand(event);"/>
+            <menuitem id="regnumhelper_toggleprefs" label="&regnumhelperTogglePrefs.label;" type="checkbox" oncommand="doToggleregnumhelperPrefs(this);" checked="false"/>
+        </menupopup>
+    </menu>
+  </menupopup>
+</overlay>
