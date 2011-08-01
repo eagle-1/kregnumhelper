@@ -344,7 +344,7 @@ function rh_wait_schau(){
                         http.onreadystatechange = function() {
                             if (http.readyState == 4) {
                                 try{
-                                    var text = http.responseText;
+                                    var text = http.responseText, found = [];
                                     //alert(http.responseText);
                                     if(found = text.match(/Status: (.[A-Za-z]*)/i)){
                                         gm_stat[tr_ind]=found[1];
@@ -469,7 +469,12 @@ function rh_igmPopup(B){
         uin=C.location.href.match(/UIN=(.[0-9a-f]*)/i)[1];
         over=C.getElementById("rhDiv");
         if(C.location.href.search(/page=guild_member&/)>-1){
-            D=B.target.parentNode.nextSibling.childNodes[1].textContent;
+            if(DD==0){
+                D=B.target.parentNode.nextSibling.childNodes[1].textContent;
+            }
+            if(DD==1){
+                D=B.target.nextSibling.textContent;
+            }
         }
         //~ }else{
             //~ if(C.location.href.search("page=vertrag&")>-1){
@@ -480,7 +485,8 @@ function rh_igmPopup(B){
         //~ }
         var G="<FORM name='notiz' action='"+C.location.pathname.substring(1,C.location.pathname.length)+"?page=nachricht2&UIN="+uin+"' style='margin: 1px;' method='post'><INPUT type='hidden' value='1' name='filled'/><INPUT type='hidden' value='"+D+"' size='50' maxlength='50' name='fname'/>";
         G+="<TABLE cellspacing='0' cellpadding='0' border='0' width='180'><TBODY><TR><TD align='left' width='30%' valign='top' class='white'>Betreff</TD><TD align='left' width='70%' valign='top' class='white'><INPUT type='text' value='' size='50' maxlength='50' name='betreff'/></TD></TR>";
-        G+="<TR><TD align='left' width='30%' valign='top' class='white'>Text</TD><TD align='left' width='70%' valign='top' class='white'><TEXTAREA onfocus='rh_noteln(1500);' onkeyup='rh_noteln(1500);' onkeydown='rh_noteln(1500);' onchange='rh_noteln(1500);' cols='50' rows='10' name='text'></TEXTAREA>";
+        G+="<TR><TD align='left' width='30%' valign='top' class='white'>Text<BR/><BR/>Smilies? Geht mit <a onclick=\"window.open('','fenster','width=270,height=400,resizable=no,scrollbars=yes')\" target=\"fenster\" href=\"hilfebb.php\">BB-Code</a></TD>";
+        G+="<TD align='left' width='70%' valign='top' class='white'><TEXTAREA onfocus='rh_noteln(1500);' onkeyup='rh_noteln(1500);' onkeydown='rh_noteln(1500);' onchange='rh_noteln(1500);' cols='50' rows='10' name='text'></TEXTAREA>";
         G+="<BR/>(noch maximal<INPUT type='text' value='1500' onfocus='notiz.text.focus();' maxlength='4' size='4' name='counter'/> Zeichen)<BR/><BR/></TD></TR>";
         G+="<TR><TD align='left' width='30%' valign='top' class='white'></TD><TD width='70%' valign='top' class='white'><INPUT id='rh_igmsend' type='submit' class='send' value=' senden '/> &nbsp; <INPUT id='rh_igmclose' type='submit' class='send' value=' schliessen ' onclick='return false;'/>";
         G+="<BR/><BR/></TD></TR></TBODY></TABLE></FORM>";
@@ -718,15 +724,26 @@ function rh_init_main(Aa){
                 //div[@style='width: 100%; margin-bottom: 2px;']
                 //div[@style='width: 100%; margin-bottom: 2px;']/div[@class='hell']
                 //var O=rh_eval(J,"//td[@class='white']/table[@cellpadding='2']/tbody")[0],
-                var O=rh_eval(J,"//div[@style='width: 100%; margin-bottom: 2px;']"),
-                P, PL, Q, QL, R, RL, S, SL, T,Qtemp,
+                if(DD==0){
+                    var O=rh_eval(J,"//div[@style='width: 100%; margin-bottom: 2px;']"),
+                    schaulink = "schaufenster_public.php4?user=";
+                }
+                if(DD==1){
+                    var O=rh_eval(J,"//div[@id='inhalt']/div/div/div"),
+                    schaulink = "schaufenster_public.php?user=";
+                }
+                var P, PL, Q, QL, R, RL, S, SL, T,Qtemp,
                 igmlink = J.location.pathname + "?page=nachricht&UIN=" + uin + "&ename=",
-                marktlink = J.location.pathname + "?page=markt4&UIN=" + uin + "&usernummer=",
-                schaulink = "schaufenster_public.php4?user=";
-                gm_cnt = O.childNodes.length-1;
+                marktlink = J.location.pathname + "?page=markt4&UIN=" + uin + "&usernummer=";
+                if(DD==0){
+                    gm_cnt = O.childNodes.length-1;
+                }
+                if(DD==1){
+                    gm_cnt = O.length;
+                }
                 tr_max = 1;
                 tr_ind = 1;
-                for(var i=1;i<O.childNodes.length;i++){
+                for(var i=1;i<gm_cnt;i++){
                     if(gm_stat[i]){
                         if(gm_stat[i]=="Normal"){
                             Qtemp = "done12.gif";
@@ -738,14 +755,20 @@ function rh_init_main(Aa){
                     }else{
                         Qtemp = "unknown.gif";
                     }
-                    Q=rh_new_elm(J,"img","","id","pr" + i,"src","chrome://regnumhelper/skin/"+Qtemp,"title","Status: unknown","style","vertical-align: middle;","width","12","height","12","border","0");
-                    gm_name[i]=O.childNodes[i].childNodes[1].firstChild.textContent;
-                    gm_uid[i]=O.childNodes[i].childNodes[1].firstChild.href.match(/suchenr=(.[0-9]*)/i)[1];
-                    P=rh_new_elm(J,"img","","src","chrome://regnumhelper/skin/igm.png","title","send IGM","style","vertical-align: middle;","width","12","height","12","border","0");
+                    Q=rh_new_elm(J,"img","","id","pr" + i,"src","chrome://regnumhelper/skin/"+Qtemp,"title","Status: unknown","style","vertical-align: top;","width","12","height","12","border","0");
+                    if(DD==0){
+                        gm_name[i]=O.childNodes[i].childNodes[1].firstChild.textContent;
+                        gm_uid[i]=O.childNodes[i].childNodes[1].firstChild.href.match(/suchenr=(.[0-9]*)/i)[1];
+                    }
+                    if(DD==1){
+                        gm_name[i]=O[i].childNodes[3].firstChild.textContent;
+                        gm_uid[i]=O[i].childNodes[3].firstChild.href.match(/suchenr=(.[0-9]*)/i)[1];
+                    }
+                    P=rh_new_elm(J,"img","","src","chrome://regnumhelper/skin/igm.png","title","send IGM","style","vertical-align: top;","width","12","height","12","border","0");
                     P.addEventListener("click",rh_igmPopup,true);
                     //~ PL=rh_new_elm(J,"A","","href",igmlink + escape(gm_name[i]) + "&sort=2");
                     //~ PL.appendChild(P);
-                    R=rh_new_elm(J,"img","","src","chrome://regnumhelper/skin/zummarkt.gif","title","Marktangebote","style","vertical-align: middle;","width","15","height","15","border","0");
+                    R=rh_new_elm(J,"img","","src","chrome://regnumhelper/skin/zummarkt.gif","title","Marktangebote","style","vertical-align: top;","width","12","height","12","border","0");
                     RL=rh_new_elm(J,"A","","href",marktlink + gm_uid[i] + "&sort=2");
                     RL.appendChild(R);
                     S=rh_new_elm(J,"img","","src","chrome://regnumhelper/skin/lagerschau.gif","title","Schaufenster","width","16","height","9","border","0");
@@ -753,13 +776,22 @@ function rh_init_main(Aa){
                     tr_arr[tr_max]="http://" + J.location.host + "/"+ schaulink + gm_uid[i];
                     tr_max++;
                     SL.appendChild(S);
-                    T=O.childNodes[i].firstChild.firstChild.textContent;
-                    O.childNodes[i].firstChild.firstChild.textContent=(T<10)?'0' + T:T;
-                    //~ rh_insAfter(PL,O.childNodes[i].firstChild.firstChild);
-                    rh_insAfter(P,O.childNodes[i].firstChild.firstChild);
-                    rh_insBefore(Q,O.childNodes[i].childNodes[1].lastChild);
-                    rh_insAfter(RL,O.childNodes[i].childNodes[2].lastChild);
-                    rh_insAfter(SL,O.childNodes[i].childNodes[6].lastChild);
+                    if(DD==0){
+                        T=O.childNodes[i].firstChild.firstChild.textContent;
+                        O.childNodes[i].firstChild.firstChild.textContent=(T<10)?'0' + T:T;
+                        rh_insAfter(P,O.childNodes[i].firstChild.firstChild);
+                        rh_insBefore(Q,O.childNodes[i].childNodes[1].lastChild);
+                        rh_insAfter(RL,O.childNodes[i].childNodes[2].lastChild);
+                        rh_insAfter(SL,O.childNodes[i].childNodes[6].lastChild);
+                    }
+                    if(DD==1){
+                        T=O[i].childNodes[1].textContent;
+                        O[i].childNodes[1].textContent=(T<10)?'0' + T:T;
+                        rh_insAfter(Q,O[i].childNodes[1].firstChild);
+                        rh_insBefore(P,O[i].childNodes[3].firstChild);
+                        rh_insBefore(SL,O[i].childNodes[3].firstChild);
+                        O[i].childNodes[5].firstChild.nodeName=="IMG"?rh_insAfter(RL,O[i].childNodes[11].firstChild):rh_insAfter(RL,O[i].childNodes[9].firstChild);
+                    }
                 }
                 tid = window.setTimeout(function(){rh_wait_schau()}, 100);
                 //prepare igm-popup
