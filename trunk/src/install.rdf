@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{05fb5410-b1ee-4bf6-8778-76e284d95c08}"
                    em:name="RegnumHelper"
-                   em:version="1.7.8"
+                   em:version="1.7.9"
                    em:creator="Nobbi"
                    em:homepageURL="http://www.gate4fun.de/regnum"
                    em:optionsURL="chrome://regnumhelper/content/pref.xul"

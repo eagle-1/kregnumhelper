@@ -1,6 +1,6 @@
-/* Regnum Helper by Nobbi (inspired from KapiSkript © by RaNaN)*/
-const rh_version="1.7.8";
-const rh_v=178;
+/* Regnum Helper by Nobbi */
+const rh_version="1.7.9";
+const rh_v=179;
 var GBack = "", tr_arr = new Array(), tr_max = 0, tr_ind = 0, tr_inprogress = new Boolean (false), popwin, mainwin,lang='de',uin,
     x=0, xx=100, yy=0, y=0, rh_showit=0, over, gm_name = new Array(), gm_uid = new Array(), gm_stat = new Array(),
     gm_cnt = 0, tid=0, rh_igmforw = new Boolean (false), rh_devel = new Boolean(false), anzahl, ziel, cur="", popcalc=null, DD = 0,
@@ -40,8 +40,8 @@ function rh_rinfo(C,D,B){
         rh_display_it()
     }
 function rh_info(B,C,A){
-        yy=-90;
-        xx=-220;
+        yy=-70;
+        xx=-210;
         if(yy==-111){
             xx=-335
         }
@@ -101,6 +101,19 @@ function rh_forschZeit(C){
         B.setTime(B.getTime()+D);
         var I=new Array("So","Mo","Di","Mi","Do","Fr","Sa");
         var G=I[B.getDay()]+" "+((B.getDate()<10)?"0"+B.getDate():B.getDate())+"."+(((parseFloat(B.getMonth())+1)<10)?"0"+(parseFloat(B.getMonth())+1):(parseFloat(B.getMonth())+1))+" "+((B.getHours()<10)?"0"+B.getHours():B.getHours())+":"+((B.getMinutes()<10)?"0"+B.getMinutes():B.getMinutes());
+        rh_info(H,"Endzeit:",G)
+    }
+function rh_endZeit(C){
+        var H=C.target.ownerDocument;
+        over=H.getElementById("rhDiv");
+        var F=C.target.parentNode.textContent;
+        var A=F.match(/([0-9]+[:][0-9]+[:][0-9]+)/)[0];
+        var E=A.split(":");
+        var D=E[0]*60*60*1000+E[1]*60*1000+E[2]*1000;
+        var B=new Date();
+        B.setTime(B.getTime()+D);
+        var I=new Array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
+        var G=I[B.getDay()]+" "+((B.getDate()<10)?"0"+B.getDate():B.getDate())+"."+(((parseFloat(B.getMonth())+1)<10)?"0"+(parseFloat(B.getMonth())+1):(parseFloat(B.getMonth())+1))+". um "+((B.getHours()<10)?"0"+B.getHours():B.getHours())+":"+((B.getMinutes()<10)?"0"+B.getMinutes():B.getMinutes())+" Uhr";
         rh_info(H,"Endzeit:",G)
     }
 function rh_BerechneProdZeit(E){
@@ -265,6 +278,7 @@ function rh_insBefore(A,B){
     }
 function rh_new_elm(D,C,E){
         var A=D.createElement(C);
+        var args = Array.prototype.slice.call(arguments);
         if(E.indexOf("<")!=-1||E.indexOf("&")!=-1){
             A.innerHTML=E
         } else {
@@ -272,12 +286,12 @@ function rh_new_elm(D,C,E){
                 A.appendChild(D.createTextNode(E))
             }
         }
-        if(rh_new_elm.arguments.length>3){
-            for(var B=3;B<rh_new_elm.arguments.length-1;B+=2){
-                if(!rh_new_elm.arguments[B+1].length){
+        if(args.length>3){
+            for(var B=3;B<args.length-1;B+=2){
+                if(!args[B+1].length){
                     continue
                 }
-                A.setAttribute(rh_new_elm.arguments[B],rh_new_elm.arguments[B+1])
+                A.setAttribute(args[B],args[B+1])
             }
         }
         return A
@@ -862,41 +876,11 @@ function rh_init_main(Aa){
                 //new J.childNodes[1].lastChild.setAttribute("onload","init();");
             }
             if(rh_prefManager.getBoolPref("extensions.rh.endzeit")){
-                var B=new Array("So","Mo","Di","Mi","Do","Fr","Sa");
-                for(var AH=0;AH<AV.length;AH++){
-                    if(AV[AH].textContent.match(/([0-9][:][0-9]+[:][0-9]+)/)){
-                        var R=AV[AH].textContent;
-                        var AK=R.split(":");
-                        var p=parseFloat(AK[0]);
-                        var M=AK[0]*60*60*1000+AK[1]*60*1000+AK[2]*1000;
-                        var f=new Date();
-                        f.setTime(f.getTime()+M);
-                        var AW = AV[AH];
-                        var rh_pre = "\n";
-                        if(AW.nodeName=='A'){
-                            if(cn1==1){
-                                AW=AV[AH].parentNode.previousSibling.previousSibling;
-                            }else{
-                                AW=AV[AH].parentNode.previousSibling;
-                            }
-                        }else{
-                            if(cn1==1){
-                                AW=AV[AH].previousSibling.previousSibling;
-                            }else{
-                                AW=AV[AH].previousSibling;
-                            }
-                        }
-                        rh_pre = AW.textContent + unescape(" bis%A0");
-                        if(p<24){
-                            AW.textContent=rh_pre+(((f.getHours()<10)?"0":"")+f.getHours())+":"+(((f.getMinutes()<10)?"0":"")+f.getMinutes())+unescape("%A0"+"Uhr")
-                        }else{
-                            if(p<48){
-                                AW.textContent=rh_pre+B[f.getDay()]+unescape("%A0")+((f.getDate()<10)?"0"+f.getDate():f.getDate())+"."+(((parseFloat(f.getMonth())+1)<10)?"0"+(parseFloat(f.getMonth())+1):(parseFloat(f.getMonth())+1))+unescape(".%A0")+((f.getHours()<10)?"0"+f.getHours():f.getHours())+":"+((f.getMinutes()<10)?"0"+f.getMinutes():f.getMinutes())+unescape("%A0"+"Uhr")
-                            }else{
-                                AW.textContent=rh_pre+B[f.getDay()]+unescape("%A0")+((f.getDate()<10)?"0"+f.getDate():f.getDate())+"."+(((parseFloat(f.getMonth())+1)<10)?"0"+(parseFloat(f.getMonth())+1):(parseFloat(f.getMonth())+1)+".")
-                            }
-                        }
-                    }
+                J.addEventListener("mousemove",rh_mouseMove,true);
+                J.childNodes[1].lastChild.appendChild(rh_new_elm(J,"div","","id","rhDiv","style","visibility:hidden; Z-INDEX: 5; LEFT: -1px; POSITION: absolute; top: 9px; border:outset; border-width:2px; border-color:#fAffe0;"));
+                for(var r=0;r<AV.length;r++){
+                    AV[r].addEventListener("mouseover",rh_endZeit,true);
+                    AV[r].addEventListener("mouseout",rh_clr,true)
                 }
             }
         }
@@ -956,7 +940,12 @@ function rh_init_main(Aa){
         if(J.location.href.search("page=markt3")>-1&&J.location.href.search("filled=1")==-1){
             if(rh_prefManager.getBoolPref("extensions.rh.ausgabenmarkt")){
                 var A=rh_eval(J,"//input[@name='teilkauf']");
-                rh_insAfter(rh_new_elm(J,"font","","id","gesamtkosten"),A[0].parentNode.nextSibling.nextSibling);
+                if(DD==0){
+                    rh_insAfter(rh_new_elm(J,"font","","id","gesamtkosten"),A[0].parentNode.nextSibling.nextSibling);
+                }
+                if(DD==1){
+                    rh_insAfter(rh_new_elm(J,"font","","id","gesamtkosten"),A[0].parentNode.parentNode.lastChild);
+                }
                 anzahl=A[0].value;
                 var AO=A[0].parentNode.parentNode;
                 var I=AO.textContent.match(/zum Preis von ([.,0-9]+)/)[1];
