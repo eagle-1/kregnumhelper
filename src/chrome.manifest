@@ -1,0 +1,5 @@
+content	regnumhelper	content/
+content	regnumhelper	content/ contentaccessible=yes
+locale	regnumhelper	de-DE	locale/de-DE/
+skin	regnumhelper	classic/1.0	skin/classic/
+overlay	chrome://browser/content/browser.xul	chrome://regnumhelper/content/firefoxOverlay.xul

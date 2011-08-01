@@ -1,0 +1,101 @@
+<!ENTITY prefwindow.title "RegnumHelper Einstellungen">
+<!ENTITY pane1.title "RegnumHelper Einstellungen">
+<!ENTITY checkboolpref.label "A Boolean Preference">
+<!ENTITY checkboolpref.accesskey "B">
+<!ENTITY intpref.label "An Integer Preference">
+<!ENTITY intpref.accesskey "I">
+<!ENTITY stringpref.label "A String Preference">
+<!ENTITY stringpref.accesskey "S">
+<!ENTITY tab.title1 "Anzeigen">
+<!ENTITY tab.title2 "Sonderfunktionen">
+<!ENTITY tab.title3 "Produktion">
+<!ENTITY aqprod "automatische Produktion Quellbrunnen:">
+<!ENTITY aqcancel "automatisch abbrechen aktivieren">
+<!ENTITY autoquell "aktivieren:">
+<!ENTITY aqv "Produktionswert:">
+<!ENTITY geldverkauf "autom. Geld einsammeln aktivieren">
+<!ENTITY welt "Welt">
+<!ENTITY wbwlink "Direktlink zum WBW anzeigen">
+<!ENTITY guildpage "Quicklinks auf der Gildenmitgliederseite">
+<!ENTITY ptitle "Fenstertitel ändern:">
+<!ENTITY ptv "Neuer Titel:">
+<!ENTITY taschenrechner "Taschenrechner anzeigen">
+<!ENTITY anzeigen "Anzeigen:">
+<!ENTITY endzeit "Endzeit anzeigen">
+<!ENTITY umsatzlager "Umsatz im Lager berechnen">
+<!ENTITY produktion "Produktion berechnen">
+<!ENTITY umsatzverkauf "Umsatz bei Verkauf berechnen">
+<!ENTITY geldsumme "Gesamtvermögen anzeigen">
+<!ENTITY ausgabenmarkt "Ausgaben am Markt berechnen">
+<!ENTITY ausbau "Ausbaukosten anzeigen">
+<!ENTITY gesamtwert "Gesamtwarenwert im Lager anzeigen">
+<!ENTITY forschend "Forschungs Endzeit">
+<!ENTITY wb "Werbepunkte berechnen">
+<!ENTITY farben "Farben">
+<!ENTITY zeit "Zeit">
+<!ENTITY farbe "Farbe">
+<!ENTITY min.n "Minute(n)">
+<!ENTITY std.n "Stunden(n)">
+<!ENTITY unter "unter">
+<!ENTITY std "Stunden">
+<!ENTITY sonderf "Sonderfunktionen:">
+<!ENTITY firmensuche "globale Firmensuche">
+<!ENTITY prodskip "Produktionsbeleg ausblenden">
+<!ENTITY cancelskip "Beleg bei Prod-Abbruch ausblenden">
+<!ENTITY schnellzugriff "Vertrag Schnellzugriff">
+<!ENTITY vertragskip "Vertragsbeleg ausblenden">
+<!ENTITY marktskip "Marktbeleg ausblenden">
+<!ENTITY allewaren "Waren mit einem Klick einfügen">
+<!ENTITY sortadress "Adressbuch sortieren">
+<!ENTITY nachrichtskip "Nachricht gelöscht ausblenden">
+<!ENTITY gebfast "Gebäude Schnellzugriff">
+<!ENTITY countdown "Countdown der Zeiten">
+<!ENTITY gebover "Bessere Gebäudeübersicht">
+<!ENTITY verwaltsort "in Verwaltungsgeb. sortieren">
+<!ENTITY marktsort "Marktprodukte sortieren:">
+<!ENTITY m.nicht "Gar nicht">
+<!ENTITY m.preis "nach Preis">
+<!ENTITY m.q "nach Qualität">
+<!ENTITY g.sort "Gebäude sortieren:">
+<!ENTITY g.n "Gar nicht">
+<!ENTITY g.zeit "nach Zeit">
+<!ENTITY g.size "nach Größe">
+<!ENTITY notizbuch "Notizbuch:">
+<!ENTITY n.aktv "Aktiviert">
+<!ENTITY n.sbarkeit "Sichtbarkeit:">
+<!ENTITY n.inoffice "Automatisch im Büro">
+<!ENTITY verwaltbereit "Bereite Gebs. mit einem Klick wählen">
+<!ENTITY statistik "Statistik by kapigeco">
+<!ENTITY stats.diff "Differenzen anzeigen">
+<!ENTITY stats.col "Produkte einfärben in den Stats">
+<!ENTITY stats.verkauf.col "Produkte einfärben im Verkauf">
+<!ENTITY graphen "Graphen">
+<!ENTITY grph.verkauf "im Verkauf">
+<!ENTITY grph.stats "in den Stats">
+<!ENTITY grph.aut "Automatisch">
+<!ENTITY grph "Graph">
+<!ENTITY angebot "Angebot">
+<!ENTITY nachfrage "Nachfrage">
+<!ENTITY preis "Preis">
+<!ENTITY quali "Qualität">
+<!ENTITY nichts "nichts">
+<!ENTITY menupreis "Preis im Menü änderbar">
+<!ENTITY spqchoose "Qualitätsauswahl vereinfachen">
+<!ENTITY vkpremium "VKPreis Hilfe im Verwaltgeb.">
+<!ENTITY nbcols "Spalten">
+<!ENTITY nbrows "Zeilen">
+<!ENTITY igmmarkt "Markt">
+<!ENTITY igmfax "Fax">
+<!ENTITY igmadress "Adressbuch">
+<!ENTITY sigvor "Vor der Nachricht:">
+<!ENTITY signach "Hinter der Nachricht:">
+<!ENTITY hzeile.1 "Die Signatur wird erst eingefügt nachdem du auf 'senden' geklickt hast!">
+<!ENTITY hzeile.2 "Du kannst folgende Variablen benutzen:">
+<!ENTITY hzeile.3 " für deinen Firmenname.">
+<!ENTITY hzeile.4 " für den Adressat.">
+<!ENTITY var.1 "name">
+<!ENTITY var.2 "firma">
+<!ENTITY ga "Privatsphäre">
+<!ENTITY tracking "Google-Analytics Skripte entfernen.">
+<!ENTITY nolinkicon "RegnumHelper-Icon entfernen.">
+

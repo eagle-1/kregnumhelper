@@ -1,0 +1,25 @@
+<html>
+    <head>
+    <title>RH-Calculator</title>
+    </head>
+    <body bgColor="CB9A48" OnLoad='document.Calc.Input.focus();'>
+        <DIV id="rhcalc" style="font-size: 8pt;"><CENTER>
+        <FORM NAME="Calc" OnSubmit="try{document.Calc.Input.value = Math.round(eval(document.Calc.Input.value.replace(/,/g,'.'))*100)/100;return false;}catch(err){self.close();return false;}"><TABLE BORDER=4><TR><TD><INPUT TYPE="text" NAME="Input" Size="22"><br></TD></TR>
+        <TR><TD><INPUT TYPE="button" NAME="one"   VALUE="  1  " OnClick="document.Calc.Input.value += '1'">
+        <INPUT TYPE="button" NAME="two"   VALUE="  2  " OnCLick="document.Calc.Input.value += '2'">
+        <INPUT TYPE="button" NAME="three" VALUE="  3  " OnClick="document.Calc.Input.value += '3'">
+        <INPUT TYPE="button" NAME="plus"  VALUE="  +  " OnClick="document.Calc.Input.value += ' + '"><br>
+        <INPUT TYPE="button" NAME="four"  VALUE="  4  " OnClick="document.Calc.Input.value += '4'">
+        <INPUT TYPE="button" NAME="five"  VALUE="  5  " OnCLick="document.Calc.Input.value += '5'">
+        <INPUT TYPE="button" NAME="six"   VALUE="  6  " OnClick="document.Calc.Input.value += '6'">
+        <INPUT TYPE="button" NAME="minus" VALUE="  -  " OnClick="document.Calc.Input.value += ' - '"><br>
+        <INPUT TYPE="button" NAME="seven" VALUE="  7  " OnClick="document.Calc.Input.value += '7'">
+        <INPUT TYPE="button" NAME="eight" VALUE="  8  " OnClick="document.Calc.Input.value += '8'">
+        <INPUT TYPE="button" NAME="nine"  VALUE="  9  " OnClick="document.Calc.Input.value += '9'">
+        <INPUT TYPE="button" NAME="times" VALUE="  x  " OnClick="document.Calc.Input.value += ' * '"><br>
+        <INPUT TYPE="button" NAME="clear" VALUE=" clr " OnClick="document.Calc.Input.value = ''">
+        <INPUT TYPE="button" NAME="zero"  VALUE="  0  " OnClick="document.Calc.Input.value += '0'">
+        <INPUT TYPE="button" NAME="DoIt"  VALUE="  =  " OnClick="document.Calc.Input.value = Math.round(eval(document.Calc.Input.value.replace(/,/g,'.'))*100)/100">
+        <INPUT TYPE="button" NAME="div"   VALUE="  /  " OnClick="document.Calc.Input.value += ' / '"><br></TD></TR></TABLE></FORM></CENTER></DIV>
+    </body>
+</html>
