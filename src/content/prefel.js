@@ -33,7 +33,6 @@ function rh_InitOptions(){
             document.getElementById("ausgabenmarkt").checked=E.getBoolPref("extensions.rh.ausgabenmarkt");
             document.getElementById("menupreis").checked=E.getBoolPref("extensions.rh.menupreis");
             document.getElementById("taschenrechner").checked=E.getBoolPref("extensions.rh.taschenrechner");
-            document.getElementById("tracking").checked=E.getBoolPref("extensions.rh.tracking");
             document.getElementById("nolinkicon").checked=E.getBoolPref("extensions.rh.nolinkicon");
             var D=E.getCharPref("extensions.rh.zeiten");
             D=D.split(":");
@@ -100,7 +99,6 @@ function rh_SaveOptions(){
             D.setBoolPref("extensions.rh.ausgabenmarkt",document.getElementById("ausgabenmarkt").checked);
             D.setBoolPref("extensions.rh.menupreis",document.getElementById("menupreis").checked);
             D.setBoolPref("extensions.rh.taschenrechner",document.getElementById("taschenrechner").checked);
-            D.setBoolPref("extensions.rh.tracking",document.getElementById("tracking").checked);
             D.setBoolPref("extensions.rh.nolinkicon",document.getElementById("nolinkicon").checked);
        }
         catch(E){

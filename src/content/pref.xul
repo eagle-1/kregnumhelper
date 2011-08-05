@@ -37,16 +37,6 @@
                                 </rows>
                             </grid>
                         </groupbox>
-                        <groupbox>
-                            <caption label="&ga;"/>
-                            <grid>
-                                <rows>
-                                    <row>
-                                        <checkbox label="&tracking;" id="tracking"/>
-                                    </row>
-                                </rows>
-                            </grid>
-                        </groupbox>
                     </row>
                     <row>
                         <groupbox>

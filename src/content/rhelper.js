@@ -1,6 +1,6 @@
 /* Regnum Helper by Nobbi */
-const rh_version="1.7.9";
-const rh_v=179;
+const rh_version="1.8.0";
+const rh_v=180;
 var GBack = "", tr_arr = new Array(), tr_max = 0, tr_ind = 0, tr_inprogress = new Boolean (false), popwin, mainwin,lang='de',uin,
     x=0, xx=100, yy=0, y=0, rh_showit=0, over, gm_name = new Array(), gm_uid = new Array(), gm_stat = new Array(),
     gm_cnt = 0, tid=0, rh_igmforw = new Boolean (false), rh_devel = new Boolean(false), anzahl, ziel, cur="", popcalc=null, DD = 0,
@@ -113,7 +113,7 @@ function rh_endZeit(C){
         var B=new Date();
         B.setTime(B.getTime()+D);
         var I=new Array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
-        var G=I[B.getDay()]+" "+((B.getDate()<10)?"0"+B.getDate():B.getDate())+"."+(((parseFloat(B.getMonth())+1)<10)?"0"+(parseFloat(B.getMonth())+1):(parseFloat(B.getMonth())+1))+". um "+((B.getHours()<10)?"0"+B.getHours():B.getHours())+":"+((B.getMinutes()<10)?"0"+B.getMinutes():B.getMinutes())+" Uhr";
+        var G=I[B.getDay()]+" "+((B.getDate()<10)?"0"+B.getDate():B.getDate())+"."+(((parseFloat(B.getMonth())+1)<10)?"0"+(parseFloat(B.getMonth())+1):(parseFloat(B.getMonth())+1))+". "+((B.getHours()<10)?"0"+B.getHours():B.getHours())+":"+((B.getMinutes()<10)?"0"+B.getMinutes():B.getMinutes())+" Uhr";
         rh_info(H,"Endzeit:",G)
     }
 function rh_BerechneProdZeit(E){
@@ -243,7 +243,7 @@ function rh_extract(C,B,A){
         return C
     }
 function rh_isRegnumDom(A){
-        if(A.search(/(skybanner.php4|ucp.php4|schaufenster_public.php4|zeitung.php4|statistics.php|hilfe[a-zA-Z0-9]*.php4)/)>-1){
+        if(A.search(/(skybanner.php|ucp.php|schaufenster_public.php|zeitung.php|statistics.php|hilfe[a-zA-Z0-9]*.php|fehlerseite.php)/)>-1){
             return false
         }
         if(A.search(/kapi-regnum*(.de|-welten.de)/)>-1){
@@ -303,7 +303,7 @@ function rh_wait_kauf (){
         } else {
             var el=popwin.document.getElementById("rhfetch");
             if (tr_ind < tr_max){
-                el.textContent=tr_ind + "/" + (tr_max - 1) + ":" + tr_arr[tr_ind];
+                el.textContent=tr_ind + "/" + (tr_max) + ":" + tr_arr[tr_ind];
                 var http = new XMLHttpRequest();
                 http.open("GET", tr_arr[tr_ind], true);
                 http.onreadystatechange = function() {
@@ -558,23 +558,20 @@ function rh_init_main(Aa){
                 rh_devel=false;
             }
         }
+        //start bugfixing for typos from upjers...
+        // leave disabled, else layout is crippled...
+        //~ var BFc = ["heigth", "background-repeart", "heigt", "widht"], BFc1 = ["height", "background-repeat", "height", "width"];
+        //~ for(var i=0;i<BFc.length;i++){
+            //~ var BFw = rh_eval(J,"//div[contains(@style,'"+ BFc[i] +"')]");
+            //~ if(BFw.length>0){
+                //~ var BFa = BFw[0].getAttribute("style");
+                //~ BFa = BFa.replace(BFc[i],BFc1[i]);
+                //~ BFw[0].setAttribute("style",BFa);
+            //~ }
+        //~ }
+        //end bugfixing for typos from upjers...
         if(rh_prefManager.getBoolPref("extensions.rh.ptitle")){
             J.title = rh_prefManager.getCharPref("extensions.rh.ptv");
-        }
-        if(rh_prefManager.getBoolPref("extensions.rh.tracking")){
-            //remove all google-analytics scripts from current page
-            var rh_scripts = J.getElementsByTagName("script"), rh_found = new Boolean (true);
-            while(rh_found==true){
-                rh_scripts = J.getElementsByTagName("script");
-                rh_found = false;
-                for (var i=0; i<rh_scripts.length;i++){
-                    if((rh_scripts[i].src.search(/google-analytics/) > -1)||(rh_scripts[i].text.search(/google-analytics/) > -1)||(rh_scripts[i].src.search(/(ga|ga_anonym)[.]js/) > -1)||(rh_scripts[i].text.search(/(ga|ga_anonym)[.]js/) > -1)){
-                        rh_scripts[i].parentNode.removeChild(rh_scripts[i]);
-                        rh_found = true;
-                    break;
-                    }
-                }
-            }
         }
         var M=rh_eval(J,"//td/abbr[text()='Bar']/parent::td/parent::tr/parent::tbody/tr/td");
         
@@ -593,7 +590,7 @@ function rh_init_main(Aa){
                     D+=2
                 }
             }
-            //alert("Line 546:" + D + "\n\n" + M.length + "\n\n" + M[2].innerHTML);
+            //alert("Line 593:" + D + "\n\n" + M.length + "\n\n" + M[2].innerHTML);
             P=rh_new_elm(J,"table","","id","rhtable1");
             H=rh_new_elm(J,"tr","");
             Q=J.createElement("TD");
@@ -626,7 +623,6 @@ function rh_init_main(Aa){
                 var L1=M[0].parentNode.nextSibling.nextSibling.nextSibling.nextSibling.childNodes[1].textContent;
             }
             if(DD==1){
-                //rh_insAfter(P,M[0].parentNode.childNodes[1]);
                 rh_insAfter(P,M[0]);
                 var K1=M[2].textContent;
                 var L1=M[4].textContent;
@@ -721,9 +717,6 @@ function rh_init_main(Aa){
         }
         if(J.location.href.search(/page=guild_member&/)>-1){
             if(rh_prefManager.getBoolPref("extensions.rh.guildpage")){
-                //div[@style='width: 100%; margin-bottom: 2px;']
-                //div[@style='width: 100%; margin-bottom: 2px;']/div[@class='hell']
-                //var O=rh_eval(J,"//td[@class='white']/table[@cellpadding='2']/tbody")[0],
                 if(DD==0){
                     var O=rh_eval(J,"//div[@style='width: 100%; margin-bottom: 2px;']"),
                     schaulink = "schaufenster_public.php4?user=";
@@ -813,7 +806,8 @@ function rh_init_main(Aa){
             }
         }
         if(rh_prefManager.getIntPref("extensions.rh.sortierung")!=0){
-            var I=rh_eval(J,"//a[contains(@href, 'page=markt2') and not(contains(@href, 'sort=')) and not(contains(@href, 'welche='))]");
+            var I=rh_eval(J,"//a[contains(@href, 'page=markt2') and not(contains(@href, 'sort=')) and not(contains(@href, 'welche='))]"),
+            sortString="";
             for(i=0;i<I.length;i++){
                 if(rh_prefManager.getIntPref("extensions.rh.sortierung")==1){
                     sortString="&welche=2&sort="
@@ -887,7 +881,7 @@ function rh_init_main(Aa){
             q=0;
             }
             if(DD==1){
-                var AV=rh_eval(J,"//div//a//text()[contains(.,':')]/.."),
+                var AV=rh_eval(J,"//div//text()[contains(.,':')]/.."),
                 q=0;
             }
             if(rh_prefManager.getBoolPref("extensions.rh.countdown")){
@@ -902,7 +896,7 @@ function rh_init_main(Aa){
                 var farben=rh_prefManager.getCharPref("extensions.rh.farben");
                 farben=farben.split(":");
                 //new J.childNodes[1].firstChild.appendChild(rh_new_elm(J,"SCRIPT","var el;var sekunden = new Array();function rh_evalNode(doc,aNode,aExpr){var result = doc.evaluate(aExpr,aNode,null,0, null);var found = [];var res;while (res = result.iterateNext()){found.push(res)}return found;}function countdown(){for(var i=0; i<el.length; i++){if( sekunden[i] < 0 ){el[i].textContent= '--:--:--';}else{var sek = sekunden[i];var stunden = Math.floor(sek/3600);sek = sek - stunden*3600;var minuten = Math.floor(sek/60);sek = sek - minuten*60;el[i].textContent = stunden+':'+((minuten < 10) ? '0' + minuten : minuten)+':'+((sek < 10) ? '0' + sek : sek);if(stunden == 0 && minuten < "+zeiten[0]+"){el[i].setAttribute('style','color: #"+farben[0]+";font-weight: bold;');}else if(stunden < "+zeiten[1]+"){el[i].setAttribute('style','color: #"+farben[1]+";font-weight: bold;');}else if(stunden < "+zeiten[2]+"){el[i].setAttribute('style','color: #"+farben[2]+";font-weight: bold;');}else if(stunden < "+zeiten[3]+"){el[i].setAttribute('style','color: #"+farben[3]+";font-weight:bold;');}}sekunden[i] = sekunden[i]-1;}window.setTimeout(countdown, 1000);}function init(){el = rh_evalNode(document,document,\"//a[contains(@id,'cd')]\");var wert = '';for (var i=0; i < el.length; ++i){wert = el[i].textContent;var splitted = new Array();splitted = wert.split(':');sekunden.push(splitted[0]*3600+splitted[1]*60+splitted[2]*1);}countdown();}","language","JavaScript"));
-                J.childNodes[1].firstChild.appendChild(rh_new_elm(J,"SCRIPT","function countdown(){var cd="+q+";for(var i=0;i<cd;i++){var ende=0;var el=document.getElementById('cd'+i);var zeit=el.textContent;if(!(zeit=='--:--:--')){var zeit=zeit.split(':');var stunden=parseFloat(zeit[0]);var minuten=parseFloat(zeit[1]);var sekunden=parseFloat(zeit[2]);if(sekunden==0){if(minuten==0){if(stunden==0){ende=1;}else{stunden--;minuten=59;sekunden=59;}}else{minuten--;sekunden=59;}}else{sekunden--;}if(ende==1){zeit='--:--:--';}else{zeit=stunden+':'+((minuten<10)?'0'+minuten:minuten)+':'+((sekunden<10)?'0'+sekunden:sekunden);}el.textContent=zeit;if(stunden==0&&minuten<"+zeiten[0]+"){el.setAttribute('style','color: #"+farben[0]+";font-weight: bold;');}else{if(stunden<"+zeiten[1]+"){el.setAttribute('style','color: #"+farben[1]+";font-weight: bold;');}else{if(stunden<"+zeiten[2]+"){el.setAttribute('style','color: #"+farben[2]+";font-weight: bold;');}else{if(stunden<"+zeiten[3]+"){el.setAttribute('style','color: #"+farben[3]+";font-weight:bold;');}}}}}}window.setTimeout(countdown,1000);}","language","JavaScript"));
+                J.childNodes[1].firstChild.appendChild(rh_new_elm(J,"SCRIPT","function countdown(){var cd="+q+";for(var i=0;i<cd;i++){var ende=0;var el=document.getElementById('cd'+i);var zeit=el.textContent;var st;(el.nodeName=='DIV')?st='width: 11%; text-align: right;':st='';if(!(zeit=='--:--:--')){var zeit=zeit.split(':');var stunden=parseFloat(zeit[0]);var minuten=parseFloat(zeit[1]);var sekunden=parseFloat(zeit[2]);if(sekunden==0){if(minuten==0){if(stunden==0){ende=1;}else{stunden--;minuten=59;sekunden=59;}}else{minuten--;sekunden=59;}}else{sekunden--;}if(ende==1){zeit='--:--:--';}else{zeit=stunden+':'+((minuten<10)?'0'+minuten:minuten)+':'+((sekunden<10)?'0'+sekunden:sekunden);}el.textContent=zeit;if(stunden==0&&minuten<"+zeiten[0]+"){el.setAttribute('style','color: #"+farben[0]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[1]+"){el.setAttribute('style','color: #"+farben[1]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[2]+"){el.setAttribute('style','color: #"+farben[2]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[3]+"){el.setAttribute('style','color: #"+farben[3]+";font-weight:bold;'+st);}}}}}}window.setTimeout(countdown,1000);}","language","JavaScript"));
                 var old_onload= J.childNodes[1].lastChild.getAttribute("onload");
                 J.childNodes[1].lastChild.setAttribute("onload","countdown();"+old_onload);
                 //new J.childNodes[1].lastChild.setAttribute("onload","init();");
@@ -911,8 +905,10 @@ function rh_init_main(Aa){
                 J.addEventListener("mousemove",rh_mouseMove,true);
                 J.childNodes[1].lastChild.appendChild(rh_new_elm(J,"div","","id","rhDiv","style","visibility:hidden; Z-INDEX: 5; LEFT: -1px; POSITION: absolute; top: 9px; border:outset; border-width:2px; border-color:#fAffe0;"));
                 for(var r=0;r<AV.length;r++){
-                    AV[r].addEventListener("mouseover",rh_endZeit,true);
-                    AV[r].addEventListener("mouseout",rh_clr,true)
+                    if(AV[r].textContent.match(/([0-9][:][0-9]+[:][0-9]+)/)){
+                        AV[r].addEventListener("mouseover",rh_endZeit,true);
+                        AV[r].addEventListener("mouseout",rh_clr,true)
+                    }
                 }
             }
         }
@@ -1024,25 +1020,10 @@ function rh_init_main(Aa){
                 gBrowser.selectedBrowser.contentDocument.location.replace(window.content.history[window.content.history.length-2])
             }
         }
-        if(J.location.pathname=="/"||J.location.pathname=="/index.php"||J.location.href.search(/kapi-regnum(.de|-welten.de)[/]main[.]php4$/)>-1){
+        if(J.location.pathname=="/"||J.location.pathname=="/index.php"){
             try{
                 var t=rh_eval(J,"//select[@name='server']");
                 t[0].options.selectedIndex=rh_prefManager.getIntPref("extensions.rh.welt");
-                if(rh_prefManager.getBoolPref("extensions.rh.tracking")){
-                    //remove all google-analytics scripts from current page
-                    var rh_scripts = J.getElementsByTagName("script"), rh_found = new Boolean (true);
-                    while(rh_found==true){
-                        rh_scripts = J.getElementsByTagName("script");
-                        rh_found = false;
-                        for (var i=0; i<rh_scripts.length;i++){
-                            if((rh_scripts[i].src.search(/google-analytics/) > -1)||(rh_scripts[i].text.search(/google-analytics/) > -1)||(rh_scripts[i].src.search(/(ga|ga_anonym)[.]js/) > -1)||(rh_scripts[i].text.search(/(ga|ga_anonym)[.]js/) > -1)){
-                                rh_scripts[i].parentNode.removeChild(rh_scripts[i]);
-                                rh_found = true;
-                            break;
-                            }
-                        }
-                    }
-                }
                 //~ var u=rh_eval(J,"//body");
                 //~ u[0].setAttribute("onload","return false;");
             }
