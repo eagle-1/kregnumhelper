@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+                   em:id="{05fb5410-b1ee-4bf6-8778-76e284d95c08}"
+                   em:name="RegnumHelper"
+                   em:version="1.8.1"
+                   em:creator="Nobbi"
+                   em:homepageURL="http://www.gate4fun.de/regnum"
+                   em:optionsURL="chrome://regnumhelper/content/pref.xul"
+                   em:iconURL="chrome://regnumhelper/content/regnumhelper.gif"
+                   em:description="erweiterte Funktionen zu Kapi-Regnum"
+                   em:type="2"
+                   em:updateURL="http://www.gate4fun.de/regnum/dl/update.rdf"
+                   em:updateKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC6+XXLlKDqhCVpGIJ/Ux9NBv8A7b2rBZXa8R1CBdysDs3poiS0rlJdNd9T3zvN/Z13Nm5KbOA9WqjJoNpo8PSXVPv+9i3QqiLWRpJj007FDhqr3xNdzjj92CpPH4KK5SVYkYisWRlfF5WkmM9SmZnKMy0UcnOzSDWIEuUp29pUSwIDAQAB">
+    <em:targetApplication RDF:resource="rdf:#$PRft73"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$PRft73"
+                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   em:minVersion="3.6"
+                   em:maxVersion="7.0.*" />
+</RDF:RDF>
