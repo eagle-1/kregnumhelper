@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{05fb5410-b1ee-4bf6-8778-76e284d95c08}"
                    em:name="RegnumHelper"
-                   em:version="1.8.0"
+                   em:version="1.8.1"
                    em:creator="Nobbi"
                    em:homepageURL="http://www.gate4fun.de/regnum"
                    em:optionsURL="chrome://regnumhelper/content/pref.xul"
@@ -19,5 +19,5 @@
   <RDF:Description RDF:about="rdf:#$PRft73"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.6"
-                   em:maxVersion="6.0.*" />
+                   em:maxVersion="7.0.*" />
 </RDF:RDF>
