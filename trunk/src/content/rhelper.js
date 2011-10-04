@@ -1,6 +1,6 @@
 /* Regnum Helper by Nobbi */
-const rh_version="1.8.0";
-const rh_v=180;
+const rh_version="1.8.1";
+const rh_v=181;
 var GBack = "", tr_arr = new Array(), tr_max = 0, tr_ind = 0, tr_inprogress = new Boolean (false), popwin, mainwin,lang='de',uin,
     x=0, xx=100, yy=0, y=0, rh_showit=0, over, gm_name = new Array(), gm_uid = new Array(), gm_stat = new Array(),
     gm_cnt = 0, tid=0, rh_igmforw = new Boolean (false), rh_devel = new Boolean(false), anzahl, ziel, cur="", popcalc=null, DD = 0,
@@ -42,6 +42,17 @@ function rh_rinfo(C,D,B){
 function rh_info(B,C,A){
         yy=-70;
         xx=-210;
+        if(yy==-111){
+            xx=-335
+        }
+        if(yy==-244){
+            xx=-335
+        }
+        rh_rinfo(B,C,A)
+    }
+function rh_moreinfo(B,C,A){
+        yy=-100;
+        xx=-310;
         if(yy==-111){
             xx=-335
         }
@@ -123,22 +134,26 @@ function rh_BerechneProdZeit(E){
                 ziel=E.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild;
             }
             if(DD==1){
-                ziel=E.target.parentNode.parentNode.nextSibling.nextSibling.firstChild;
+                ziel=E.target.parentNode.parentNode.nextSibling.nextSibling.childNodes[3].childNodes[1];
             }
                 anzahl=ziel.value;
         }else{
             ziel=E.target;
             anzahl=E.target.value;
         }
-        if(anzahl==0||anzahl==""){
+        if(anzahl==0||anzahl==""||anzahl=="DD:HH:MM"){
             if(DD==0){
                 ziel.nextSibling.textContent="Endzeit: "
             }
             if(DD==1){
-                ziel.nextSibling.nextSibling.textContent="Endzeit: "
+                ziel.parentNode.nextSibling.nextSibling.textContent="Endzeit: "
             }
         }else{
-            var D=rh_evalNode(E.target.ownerDocument,E.target.parentNode.parentNode,".//font");
+            if(E.target.getAttribute("size")==8){
+                var D=rh_evalNode(E.target.ownerDocument,E.target.parentNode,".//font");
+            }else{
+                var D=rh_evalNode(E.target.ownerDocument,E.target.parentNode.parentNode.parentNode,".//font");
+            }
             var C=D[0].parentNode.lastChild.textContent;
             C=C.substring(C.search("Pro Std.")+"Pro Std.".length+1,C.length);
             var F=3600/C;
@@ -151,7 +166,7 @@ function rh_BerechneProdZeit(E){
                 ziel.nextSibling.textContent="Endzeit: " + B
             }
             if(DD==1){
-                ziel.nextSibling.nextSibling.textContent="Endzeit: " + B
+                ziel.parentNode.nextSibling.nextSibling.textContent="Endzeit: " + B
             }
         }
     }
@@ -159,14 +174,14 @@ function rh_ProdKosten(A){
         var K=A.target.ownerDocument;
         over=K.getElementById("rhDiv");
         var C="<table border=0 width=180 cellpadding=0 cellspacing=0>";
-        var D=rh_evalNode(K,A.target.parentNode.parentNode,".//font[@class='klein']");
-        var F=D[1].parentNode.firstChild;
+        var D=rh_evalNode(K,A.target.parentNode.parentNode.parentNode,".//font[@class='klein']");
+        var F=D[1].parentNode.childNodes[1];
         if(A.target.getAttribute("size")==8){
             if(DD==0){
                 anzahl=A.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild.value;
             }
             if(DD==1){
-                anzahl=A.target.parentNode.parentNode.nextSibling.nextSibling.firstChild.value;
+                anzahl=A.target.parentNode.parentNode.nextSibling.nextSibling.childNodes[3].childNodes[1].value;
             }
         }else{
             anzahl=A.target.value;
@@ -175,17 +190,21 @@ function rh_ProdKosten(A){
             var G=D[1].textContent.substring(D[1].textContent.search("tigt: ")+"tigt: ".length,D[1].textContent.length);
             var B=new Array();
             var H=new Array();
+            var L1=new Array();
+            var L2=new Array();
             for(var E=0;G.search(/[0-9]/)>-1;E++){
                 H[E]=G.substring(G.search(/[0-9]/),G.search(/[a-za-я]/i)-1);
                 G=G.substring(G.search(/[a-za-я]/i),G.length);
+                //now trimming whitespaces
                 if(G.search(/[0-9]/)>-1){
-                    B[E]=G.substring(G.search(/[a-za-я]/i),G.search(/[0-9]/));
+                    B[E]=G.substring(G.search(/[a-za-я]/i),G.search(/[0-9]/)).replace(/^\s+|\s+$/g, '');
                     G=G.substring(G.search(/[0-9]/),G.length)
                 }else{
-                    B[E]=G
+                    B[E]=G.replace(/^\s+|\s+$/g, '');
                 }
             }
             for(E=0;E<B.length;E++){
+                L1[E]=B[E].split(" ")[1]
                 C+="<tr><td>"+Math.setSectionPoints(Math.round(H[E]*anzahl*10)/10)+" "+B[E]+"</td></tr>"
             }
         }
@@ -199,6 +218,19 @@ function rh_ProdKosten(A){
         I=I.replace(",",".");
         C+="<tr><td>"+Math.setSectionPoints(Math.round(I*anzahl*100)/100)+" "+cur+"</td></tr></table>";
         rh_info(K,Math.setSectionPoints(anzahl)+" "+F.textContent,C)
+        //~ L2=rh_filterLager(L1);
+        //~ C+="<table border=0 width=180 cellpadding=2 cellspacing=0><tr><td><b>Lager:</b></td></tr>";
+        //~ C+="<tr><td>Menge</td><td>Gut</td><td>Quali</td><td>EKPreis</td></tr>";
+        //~ for(E=0;E<L2.length;E++){
+            //~ C+="<tr><td>10.000.000</td><td>"+L1[E]+"</td><td><center>"+E+"</center></td><td>"+2.67*Math.pow(10,E) +" "+cur+"</td></tr>"
+        //~ }
+        //~ C+="</table>";
+        //~ rh_moreinfo(K,Math.setSectionPoints(anzahl)+" "+F.textContent,C);
+    }
+function rh_filterLager(L){
+    var L2=new Array();
+    var i=L.Length -1;
+    return L;
     }
 function rh_BerechneProduktion(E){
         var D=E.target.value;
@@ -222,7 +254,7 @@ function rh_BerechneProduktion(E){
             E.target.parentNode.parentNode.parentNode.parentNode.parentNode.nextSibling.firstChild.value=A
         }
         if(DD=1){
-            E.target.parentNode.parentNode.nextSibling.nextSibling.firstChild.value=A
+            E.target.parentNode.parentNode.nextSibling.nextSibling.childNodes[3].childNodes[1].value=A
         }
     }
 function rh_BerechneKosten(A){
@@ -714,6 +746,8 @@ function rh_init_main(Aa){
                     L[r].parentNode.appendChild(AY[r])
                 }
             }
+            // XPath= //div[@class='lager'][1]/text()  bis   //div[@class='lager'][4]/text()
+            // XPath= //a[contains(@href,'start=')] wenn >0 dann mehr als 1 lagerseite; Anzahl=(XPath/2)-1
         }
         if(J.location.href.search(/page=guild_member&/)>-1){
             if(rh_prefManager.getBoolPref("extensions.rh.guildpage")){
@@ -825,7 +859,7 @@ function rh_init_main(Aa){
                     var AD=A[0].parentNode.parentNode.parentNode.parentNode.parentNode;
                 }
                 if(DD==1){
-                    var AD=A[0].parentNode;
+                    var AD=A[0].parentNode.parentNode;
                 }
                 var U=rh_new_elm(J,"font","Kosten:"+unescape("%A0%A0")+"Dauer:","id","kosten");
                 var Y=rh_new_elm(J,"font","Holz:"+unescape("%A0%A0")+"Steine:"+unescape("%A0%A0")+"Werkzeuge:","id","kosten2");
@@ -896,7 +930,7 @@ function rh_init_main(Aa){
                 var farben=rh_prefManager.getCharPref("extensions.rh.farben");
                 farben=farben.split(":");
                 //new J.childNodes[1].firstChild.appendChild(rh_new_elm(J,"SCRIPT","var el;var sekunden = new Array();function rh_evalNode(doc,aNode,aExpr){var result = doc.evaluate(aExpr,aNode,null,0, null);var found = [];var res;while (res = result.iterateNext()){found.push(res)}return found;}function countdown(){for(var i=0; i<el.length; i++){if( sekunden[i] < 0 ){el[i].textContent= '--:--:--';}else{var sek = sekunden[i];var stunden = Math.floor(sek/3600);sek = sek - stunden*3600;var minuten = Math.floor(sek/60);sek = sek - minuten*60;el[i].textContent = stunden+':'+((minuten < 10) ? '0' + minuten : minuten)+':'+((sek < 10) ? '0' + sek : sek);if(stunden == 0 && minuten < "+zeiten[0]+"){el[i].setAttribute('style','color: #"+farben[0]+";font-weight: bold;');}else if(stunden < "+zeiten[1]+"){el[i].setAttribute('style','color: #"+farben[1]+";font-weight: bold;');}else if(stunden < "+zeiten[2]+"){el[i].setAttribute('style','color: #"+farben[2]+";font-weight: bold;');}else if(stunden < "+zeiten[3]+"){el[i].setAttribute('style','color: #"+farben[3]+";font-weight:bold;');}}sekunden[i] = sekunden[i]-1;}window.setTimeout(countdown, 1000);}function init(){el = rh_evalNode(document,document,\"//a[contains(@id,'cd')]\");var wert = '';for (var i=0; i < el.length; ++i){wert = el[i].textContent;var splitted = new Array();splitted = wert.split(':');sekunden.push(splitted[0]*3600+splitted[1]*60+splitted[2]*1);}countdown();}","language","JavaScript"));
-                J.childNodes[1].firstChild.appendChild(rh_new_elm(J,"SCRIPT","function countdown(){var cd="+q+";for(var i=0;i<cd;i++){var ende=0;var el=document.getElementById('cd'+i);var zeit=el.textContent;var st;(el.nodeName=='DIV')?st='width: 11%; text-align: right;':st='';if(!(zeit=='--:--:--')){var zeit=zeit.split(':');var stunden=parseFloat(zeit[0]);var minuten=parseFloat(zeit[1]);var sekunden=parseFloat(zeit[2]);if(sekunden==0){if(minuten==0){if(stunden==0){ende=1;}else{stunden--;minuten=59;sekunden=59;}}else{minuten--;sekunden=59;}}else{sekunden--;}if(ende==1){zeit='--:--:--';}else{zeit=stunden+':'+((minuten<10)?'0'+minuten:minuten)+':'+((sekunden<10)?'0'+sekunden:sekunden);}el.textContent=zeit;if(stunden==0&&minuten<"+zeiten[0]+"){el.setAttribute('style','color: #"+farben[0]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[1]+"){el.setAttribute('style','color: #"+farben[1]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[2]+"){el.setAttribute('style','color: #"+farben[2]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[3]+"){el.setAttribute('style','color: #"+farben[3]+";font-weight:bold;'+st);}}}}}}window.setTimeout(countdown,1000);}","language","JavaScript"));
+                J.childNodes[1].firstChild.appendChild(rh_new_elm(J,"SCRIPT","function countdown(){var cd="+q+";for(var i=0;i<cd;i++){var ende=0;var el=document.getElementById('cd'+i);var zeit=el.textContent;var st;(el.nodeName=='DIV')?st='width: 10%; text-align: right;':st='';if(!(zeit=='--:--:--')){var zeit=zeit.split(':');var stunden=parseFloat(zeit[0]);var minuten=parseFloat(zeit[1]);var sekunden=parseFloat(zeit[2]);if(sekunden==0){if(minuten==0){if(stunden==0){ende=1;}else{stunden--;minuten=59;sekunden=59;}}else{minuten--;sekunden=59;}}else{sekunden--;}if(ende==1){zeit='--:--:--';}else{zeit=stunden+':'+((minuten<10)?'0'+minuten:minuten)+':'+((sekunden<10)?'0'+sekunden:sekunden);}el.textContent=zeit;if(stunden==0&&minuten<"+zeiten[0]+"){el.setAttribute('style','color: #"+farben[0]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[1]+"){el.setAttribute('style','color: #"+farben[1]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[2]+"){el.setAttribute('style','color: #"+farben[2]+";font-weight: bold;'+st);}else{if(stunden<"+zeiten[3]+"){el.setAttribute('style','color: #"+farben[3]+";font-weight:bold;'+st);}}}}}}window.setTimeout(countdown,1000);}","language","JavaScript"));
                 var old_onload= J.childNodes[1].lastChild.getAttribute("onload");
                 J.childNodes[1].lastChild.setAttribute("onload","countdown();"+old_onload);
                 //new J.childNodes[1].lastChild.setAttribute("onload","init();");
@@ -923,7 +957,7 @@ function rh_init_main(Aa){
                     var A=rh_eval(J,"//form[contains(@action,'page=roh2&art=')]/table/tbody/tr");
                     for(var B=1;B<A.length;B++){
                         if(A[B].childNodes[1].firstChild.nodeName=="INPUT"){
-                            A[B].childNodes[1].appendChild(J.createTextNode("Endzeit:"));
+                            //A[B].childNodes[1].appendChild(J.createTextNode("Endzeit:"));
                             A[B].childNodes[1].addEventListener("keyup",rh_BerechneProdZeit,true);
                             A[B].childNodes[1].addEventListener("keyup",rh_ProdKosten,true);
                             A[B].childNodes[1].addEventListener("change",rh_clr,true);
@@ -944,7 +978,7 @@ function rh_init_main(Aa){
                 if(DD==1){
                     var A=rh_eval(J,"//form[contains(@action,'page=roh2&art=')]/div/div/div");
                     for(var B=0;B<(A.length);B++){
-                        if(A[B].childNodes[3].firstChild.nodeName=="INPUT"){
+                        if(A[B].childNodes[3].childNodes[3].childNodes[1].nodeName=="INPUT"){
                             A[B].childNodes[3].appendChild(J.createTextNode("Endzeit:"));
                             A[B].childNodes[3].addEventListener("keyup",rh_BerechneProdZeit,true);
                             A[B].childNodes[3].addEventListener("keyup",rh_ProdKosten,true);
@@ -964,6 +998,10 @@ function rh_init_main(Aa){
                     }
                 }
             }
+            // nur wenn nicht im Quellbrunnen:
+            //~ if((rh_prefManager.getBoolPref("extensions.rh.checklager"))&&(J.location.href.search(/art=4&/)==-1)){
+                
+            //~ }
         }
         if(J.location.href.search("page=markt3")>-1&&J.location.href.search("filled=1")==-1){
             if(rh_prefManager.getBoolPref("extensions.rh.ausgabenmarkt")){
