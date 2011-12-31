@@ -1,6 +1,6 @@
 /* Regnum Helper by Nobbi */
-const rh_version="1.8.1";
-const rh_v=181;
+const rh_version="1.8.2";
+const rh_v=182;
 var GBack = "", tr_arr = new Array(), tr_max = 0, tr_ind = 0, tr_inprogress = new Boolean (false), popwin, mainwin,lang='de',uin,
     x=0, xx=100, yy=0, y=0, rh_showit=0, over, gm_name = new Array(), gm_uid = new Array(), gm_stat = new Array(),
     gm_cnt = 0, tid=0, rh_igmforw = new Boolean (false), rh_devel = new Boolean(false), anzahl, ziel, cur="", popcalc=null, DD = 0,
@@ -815,9 +815,10 @@ function rh_init_main(Aa){
                         T=O[i].childNodes[1].textContent;
                         O[i].childNodes[1].textContent=(T<10)?'0' + T:T;
                         rh_insAfter(Q,O[i].childNodes[1].firstChild);
-                        rh_insBefore(P,O[i].childNodes[3].firstChild);
-                        rh_insBefore(SL,O[i].childNodes[3].firstChild);
-                        O[i].childNodes[5].firstChild.nodeName=="IMG"?rh_insAfter(RL,O[i].childNodes[11].firstChild):rh_insAfter(RL,O[i].childNodes[9].firstChild);
+                        //rh_insBefore(P,O[i].childNodes[3].firstChild);
+                        //rh_insBefore(SL,O[i].childNodes[3].firstChild);
+                        rh_insBefore(RL,O[i].childNodes[3].firstChild);
+                        //O[i].childNodes[5].firstChild.nodeName=="IMG"?rh_insAfter(RL,O[i].childNodes[11].firstChild):rh_insAfter(RL,O[i].childNodes[9].firstChild);
                     }
                 }
                 tid = window.setTimeout(function(){rh_wait_schau()}, 100);
